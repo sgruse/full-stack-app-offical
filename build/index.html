@@ -7,9 +7,15 @@
   <body data-ng-app="PeopleApp">
     <main data-ng-controller="PeopleController">
       <h1>{{people}}</h1>
+      <form data-ng-submit="getPeople()">
+        <button type="submit">Get People</button>
+      </form>
       <ul>
         <li data-ng-repeat="person in people">{{newPerson.name}}</li>
       </ul>
+      <p>
+
+      </p>
       <form data-ng-submit="createPerson(newPerson)">
         <input type="text" data-ng-model="newPerson">
         <button type="submit">New Person</button>

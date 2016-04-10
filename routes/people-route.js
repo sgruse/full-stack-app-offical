@@ -16,7 +16,6 @@ apiRouter.route('/people')
     req.on('data', (data) => {
       console.log('BACK END POST ROUTE HIT!!');
       req.body = JSON.parse(data);
-      console.log('DATA FROM INPUT FIELD TO BACK END : ' + req.body);
       var newPerson = new People(req.body);
       newPerson.save((err, person) => {
       res.json(person);
