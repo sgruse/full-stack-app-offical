@@ -5,18 +5,22 @@ var People = require(__dirname + '/../models/person-model');
 module.exports = (apiRouter) => {
 apiRouter.route('/people')
   .get((req, res) => {
+    console.log('PEOPLE ROUTE HIT')
     People.find({}, (err, people) => {
       if (err) throw err;
       res.json({people});
+      res.end();
     });
   })
   .post((req, res) => {
     req.on('data', (data) => {
+      console.log('BACK END POST ROUTE HIT!!');
       req.body = JSON.parse(data);
-      console.log(req.body);
+      console.log('DATA FROM INPUT FIELD TO BACK END : ' + req.body);
       var newPerson = new People(req.body);
       newPerson.save((err, person) => {
       res.json(person);
+      res.end();
     });
   });
 })
