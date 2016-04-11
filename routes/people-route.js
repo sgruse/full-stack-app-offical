@@ -14,7 +14,8 @@ apiRouter.route('/people')
   .post((req, res) => {
       var newPerson = new People(req.body);
       newPerson.save((err, person) => {
-      res.json(person);
+      console.log('NEWLY SAVED PERSON : ' + person);
+      res.json(person._id);
       res.end();
     });
 })
@@ -36,9 +37,12 @@ apiRouter.route('/people/:id')
   })
 })
   .delete((req, res) => {
-    Person.findByIdAndRemove(req.params.id, (err, person) => {
+    console.log('DELETE ROUTE HAS BEEN HIT WITH : ' + req.params.id);
+    People.findById(req.params.id, (err, person) => {
       if (err) throw err;
-      res.send(person + ' has been deleted');
+      person.remove((err, person) => {
+        res.send(person + ' has been deleted');
+      })
     })
   })
 }

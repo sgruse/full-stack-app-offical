@@ -10,9 +10,8 @@ const app = angular.module('PeopleApp', [])
     $scope.getPeople = function() {
       $http.get(mainRoute)
         .then((result) => {
-          console.log(result.data.people);
           for(var i = 0; i < result.data.people.length; i++) {
-            $scope.people[i] = result.data.people[i].name
+            $scope.people[i] = result.data.people[i]
           }
         },
       function(error) {
@@ -23,6 +22,22 @@ const app = angular.module('PeopleApp', [])
       $http.post(mainRoute, newPerson)
       .then( function(res){
         $scope.people.push(newPerson);
+      })
+    }
+    $scope.removePerson = function(person) {
+      $http.delete(mainRoute + '/' + person._id)
+      .then((res) => {
+        $scope.people = $scope.people.filter((p) => {
+          p._id != person._id
+        })
+      })
+    }
+    $scope.updatePerson = function(person) {
+      $http.put(mainRoute + '/' + person._id)
+      .then((res) => {
+        $scope.people = $scope.people.filter((p) => {
+          p._id = person._id
+        })
       })
     }
   }]);
