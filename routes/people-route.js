@@ -5,7 +5,6 @@ var People = require(__dirname + '/../models/person-model');
 module.exports = (apiRouter) => {
 apiRouter.route('/people')
   .get((req, res) => {
-    console.log('PEOPLE ROUTE HIT')
     People.find({}, (err, people) => {
       if (err) throw err;
       res.json({people});
@@ -13,17 +12,11 @@ apiRouter.route('/people')
     });
   })
   .post((req, res) => {
-    // req.on('data', (data) => {
-      // req.body = JSON.parse(data);
-      console.log('POST ROUTE HIT WITH Data: ' + req);
-      console.log('BACK END POST ROUTE HIT WITH !!' + req.body);
       var newPerson = new People(req.body);
       newPerson.save((err, person) => {
-      console.log(person + ' HAS BEEN SAVED');
       res.json(person);
       res.end();
     });
-  // });
 })
 
 apiRouter.route('/people/:id')

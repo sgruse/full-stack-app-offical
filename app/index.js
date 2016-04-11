@@ -11,14 +11,15 @@ const app = angular.module('PeopleApp', [])
       $http.get(mainRoute)
         .then((result) => {
           console.log(result.data.people);
-          $scope.people = result.data.people
+          for(var i = 0; i < result.data.people.length; i++) {
+            $scope.people[i] = result.data.people[i].name
+          }
         },
       function(error) {
         console.log('ERRROR');
       })
     }
     $scope.createPerson = function(newPerson) {
-      console.log(newPerson);
       $http.post(mainRoute, newPerson)
       .then( function(res){
         $scope.people.push(newPerson);

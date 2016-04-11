@@ -6,20 +6,25 @@
   </head>
   <body data-ng-app="PeopleApp">
     <main data-ng-controller="PeopleController">
-      <h1>{{people}}</h1>
-      <form data-ng-submit="getPeople()">
-        <button type="submit">Get People</button>
-      </form>
-      <ul>
-        <li data-ng-repeat="person in people">{{newPerson.name}}</li>
-      </ul>
-      <p>
 
-      </p>
+    <!-- GET PERSON FIELD -->
+      <form data-ng-submit="getPeople()">
+          <button type="submit">Get People</button>
+        <ul>
+          <li data-ng-repeat="person in people">{{people}}</li>
+        </ul>
+      </form>
+
+    <!-- CREATE PERSON FIELD -->
       <form data-ng-submit="createPerson(newPerson)">
+        <h4>Enter First Name</h4>
         <input type="text" data-ng-model="newPerson.name">
+        <h4>Enter Your Age</h4>
+        <input type="text" name="name" data-ng-model="newPerson.age">
         <button type="submit">New Person</button>
       </form>
+
+      <!-- DELETE PERSON BY NAME -->
     </main>
     <script type="text/javascript" src='./bundle.js'></script>
   </body>
