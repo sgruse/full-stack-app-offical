@@ -11,8 +11,13 @@
       <form data-ng-submit="getPeople()">
           <button type="submit">Get People</button>
         <ul>
-          <li data-ng-repeat="person in people">{{people}}</li>
+          <li data-ng-repeat="person in people">{{person}}</li>
         </ul>
+      </form>
+    <!-- REMOVE PERSON BY ID -->
+      <form data-ng-submit="removePerson(person)">
+        <input type="text" name="name" data-ng-model="person._id">
+        <button type="submit">Remove Person By ID</button>
       </form>
 
     <!-- CREATE PERSON FIELD -->
@@ -24,7 +29,11 @@
         <button type="submit">New Person</button>
       </form>
 
-      <!-- DELETE PERSON BY NAME -->
+      <!-- UPDATE USER BY EXISTING ID -->
+      <form data-ng-submit="updatePerson(person)">
+        <input type="text" name="name" data-ng-model="person._id">
+        <button type="submit">Update Person</button>
+      </form>
     </main>
     <script type="text/javascript" src='./bundle.js'></script>
   </body>
