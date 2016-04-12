@@ -30,6 +30,7 @@ apiRouter.route('/people/:id')
   .put((req, res) => {
     req.on('data', (data) => {
     req.body = JSON.parse(data);
+    console.log('DATA COMING FROM ANGULAR PUT ROUTEA' + req.body);
     People.findByIdAndUpdate({_id: req.params.id}, req.body, (err, person) => {
       if (err) throw err;
       res.json(req.body);

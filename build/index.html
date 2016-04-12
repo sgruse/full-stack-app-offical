@@ -14,30 +14,37 @@
         <ul>
           <li data-ng-repeat="person in people">
             {{person}}
-            <button type="text">Edit</button>
+            <button data-ng-click="removePerson(person)">Delete</button>
+            <button data-ng-click="person.editing = true">Edit</button>
+            <input data-ng-if="person.editing" data-ng-submit="updatePerson(person)">
+            <input type="text" data-ng-model="person.name">
+            <button data-ng-click="person.editing = false">Cancel</button>
+            <button type="submit">Update</button>
           </li>
         </ul>
-      </form>
-    <!-- REMOVE PERSON BY ID -->
-      <form data-ng-submit="removePerson(person)">
-        <input type="text" name="name" data-ng-model="person._id">
-        <button type="submit">Remove Person By ID</button>
       </form>
 
     <!-- CREATE PERSON FIELD -->
       <form data-ng-submit="createPerson(newPerson)">
-        <h4>Enter First Name</h4>
-        <input type="text" data-ng-model="newPerson.name">
-        <h4>Enter Your Age</h4>
-        <input type="text" name="name" data-ng-model="newPerson.age">
+        <label>Enter Your Name:
+        <input type="text" data-ng-model="newPerson.name" required>
+        </label>
+        <label>Enter Your Age:
+        <input type="text" name="name" data-ng-model="newPerson.age" required>
+        </label>
         <button type="submit">New Person</button>
       </form>
 
       <!-- UPDATE USER BY EXISTING ID -->
-      <form data-ng-submit="updatePerson(person)">
+      <!-- <form data-ng-submit="updatePerson(person)">
         <input type="text" name="name" data-ng-model="person._id">
-        <button type="submit">Update Person</button>
+        <button type="submit">Update Person</button> -->
 
+      </form>
+      <!-- REMOVE PERSON BY ID -->
+      <form data-ng-submit="removePerson(person)">
+        <input type="text" name="name" data-ng-model="person._id">
+        <button type="submit">Remove Person By ID</button>
       </form>
     </tr>
 

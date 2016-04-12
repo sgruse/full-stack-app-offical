@@ -37,6 +37,7 @@ const app = angular.module('PeopleApp', [])
       console.log('UPDATE PERSON HAS BEEN HIT!!!');
       $http.put(mainRoute + '/' + person._id)
       .then((res) => {
+        $scope.editing = false;
         $scope.people = $scope.people.filter((p) => {
           p._id = person._id
         })
