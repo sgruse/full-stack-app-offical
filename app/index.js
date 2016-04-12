@@ -29,10 +29,12 @@ const app = angular.module('PeopleApp', [])
       .then((res) => {
         $scope.people = $scope.people.filter((p) => {
           p._id != person._id
+          $scope.getPeople();
         })
       })
     }
     $scope.updatePerson = function(person) {
+      console.log('UPDATE PERSON HAS BEEN HIT!!!');
       $http.put(mainRoute + '/' + person._id)
       .then((res) => {
         $scope.people = $scope.people.filter((p) => {

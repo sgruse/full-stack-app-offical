@@ -6,12 +6,16 @@
   </head>
   <body data-ng-app="PeopleApp">
     <main data-ng-controller="PeopleController">
+      <tr>
 
     <!-- GET PERSON FIELD -->
       <form data-ng-submit="getPeople()">
           <button type="submit">Get People</button>
         <ul>
-          <li data-ng-repeat="person in people">{{person}}</li>
+          <li data-ng-repeat="person in people">
+            {{person}}
+            <button type="text">Edit</button>
+          </li>
         </ul>
       </form>
     <!-- REMOVE PERSON BY ID -->
@@ -33,7 +37,10 @@
       <form data-ng-submit="updatePerson(person)">
         <input type="text" name="name" data-ng-model="person._id">
         <button type="submit">Update Person</button>
+
       </form>
+    </tr>
+
     </main>
     <script type="text/javascript" src='./bundle.js'></script>
   </body>
