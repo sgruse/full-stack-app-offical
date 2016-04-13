@@ -5,32 +5,51 @@
     <title>Client Side!!!</title>
   </head>
   <body data-ng-app="PeopleApp">
-    <main data-ng-controller="PeopleController as people">
-      <tr>
+    <main class="container">
+      <main ng-init="peopleCtrl.getPeople()" ng-controller="PeopleController as peopleCtrl" ng-cloak>
 
-    <!-- GET PERSON FIELD -->
-      <form data-ng-submit="getPeople()">
-          <button type="submit">Get People</button>
-        <ul>
-          <li data-ng-repeat="person in people">
-            {{person}}
-            <button data-ng-click="removePerson(person)">Delete</button>
-            <button data-ng-click="person.editing = true">Edit</button>
-            <input data-ng-if="person.editing" data-ng-submit="updatePerson(person)">
-            <input type="text" data-ng-model="person.name">
-            <button data-ng-click="person.editing = false">Cancel</button>
-            <button type="submit">Update</button>
-          </li>
-        </ul>
+      <section class="header-and-button">
+        <h2>People</h2>
+        <button class="lime-button" type="button" ng-click="peopleCtrl.createPerson.rendered = person._id">Create Person</button>
+      </section>
+
+      <form name="people-form" ng-show="peopleCtrl.createPerson.rendered === person._id" ng-submit="peopleCtrl.createPerson.rendered = null">
+        <span>Name:</span><input type="text" ng-model="person.name" ng-model-options="{debounce: 500}" ng-minlength="1" ng-maxlength="15" required>
+        <span>Age:</span><input type="number" ng-model="person.age" ng-model-options="{debounce: 500}" required>
+        <button type="submit" class="save-button" ng-click="peopleCtrl.createPerson(person)">Save Person</button>
+        <button type="reset" class="cancel-button" ng-click="peopleCtrl.createPerson.rendered = null">Cancel</button>
       </form>
 
+
+
+
+
+
+      <section ng-repeat="person in peopleCtrl.people" ng-cloak>
+        <ul>
+          <li class="info-line"><span>Name: </span>{{person}}</li>
+        </ul>
+        <button type="submit" ng-click="peopleCtrl.updatePerson.rendered = person._id">Update Person</button>
+        <button type="button" ng-click"peopleCtrl.removePerson(person)">Delete Person</button>
+      </section>
+    <button ng-click="peopleCtrl.getPeople()">Refresh List</button>
+
+
+
+
+
+
+    </main>
+
+
+
     <!-- CREATE PERSON FIELD -->
-      <form data-ng-submit="createPerson(newPerson)">
-        <label>Enter Your Name:
-        <input type="text" data-ng-model="newPerson.name" required>
+      <form name="createPersonForm" data-ng-submit="peopleCtrl.createPerson(newPerson)">
+        <label>Input an person:
+        <input placeholder="Name" type="text" data-ng-model="peopleCtrl.newPerson.name" required>
         </label>
         <label>Enter Your Age:
-        <input type="text" name="name" data-ng-model="newPerson.age" required>
+        <input placeholder="Age" type="text" name="name" data-ng-model="peopleCtrl.newPerson.age" required>
         </label>
         <button type="submit">New Person</button>
       </form>
@@ -42,11 +61,11 @@
 
       </form>
       <!-- REMOVE PERSON BY ID -->
-      <form data-ng-submit="removePerson(person)">
+      <!-- <form data-ng-submit="removePerson(person)">
         <input type="text" name="name" data-ng-model="person._id">
         <button type="submit">Remove Person By ID</button>
-      </form>
-    </tr>
+      </form> -->
+
 
     </main>
     <script type="text/javascript" src='./bundle.js'></script>

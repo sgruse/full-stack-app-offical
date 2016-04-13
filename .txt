@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Client Side!!!</title>
+  </head>
+  <body data-ng-app="PeopleApp">
+    <main data-ng-controller="PeopleController as peopleCtrl">
+
+
+    <!-- GET PERSON FIELD -->
+      <form>
+          <button type="submit">Get People</button>
+        <ul>
+          <li ng-repeat="person in peopleCtrl.people">
+            {{person}}
+            <!-- <button data-ng-click="removePerson(person)">Delete</button>
+            <input type="text" data-ng-model="person.name">
+            <button data-ng-click="person.editing = false">Cancel</button>
+            <button type="submit">Update</button> -->
+            <li>
+              <button data-ng-click="peopleCtrl.editing = true">Edit</button>
+              <button data-ng-click="peopleCtrl.editing = false">Cancel</button>
+              <input ng-show="peopleCtrl.editing">
+            </li>
+          </li>
+        </ul>
+      </form>
+
+
+    <!-- CREATE PERSON FIELD -->
+      <form name="createPersonForm" data-ng-submit="peopleCtrl.createPerson(newPerson)">
+        <label>Input an person:
+        <input placeholder="Name" type="text" data-ng-model="peopleCtrl.newPerson.name" required>
+        </label>
+        <label>Enter Your Age:
+        <input placeholder="Age" type="text" name="name" data-ng-model="peopleCtrl.newPerson.age" required>
+        </label>
+        <button type="submit">New Person</button>
+      </form>
+
+      <!-- UPDATE USER BY EXISTING ID -->
+      <!-- <form data-ng-submit="updatePerson(person)">
+        <input type="text" name="name" data-ng-model="person._id">
+        <button type="submit">Update Person</button> -->
+
+      </form>
+      <!-- REMOVE PERSON BY ID -->
+      <!-- <form data-ng-submit="removePerson(person)">
+        <input type="text" name="name" data-ng-model="person._id">
+        <button type="submit">Remove Person By ID</button>
+      </form> -->
+
+
+    </main>
+    <script type="text/javascript" src='./bundle.js'></script>
+  </body>
+</html>

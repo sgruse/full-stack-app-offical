@@ -12,10 +12,12 @@ apiRouter.route('/people')
     });
   })
   .post((req, res) => {
+      console.log('BACK END POST ROUTE HAS BEEN HIT ');
       var newPerson = new People(req.body);
+      console.log('NEW PERSON : ' + newPerson);
       newPerson.save((err, person) => {
       console.log('NEWLY SAVED PERSON : ' + person);
-      res.json(person._id);
+      res.json(person);
       res.end();
     });
 })
