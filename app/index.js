@@ -3,41 +3,49 @@
 const angular = require('angular');
 
 const app = angular.module('PeopleApp', [])
-  .controller('PeopleController', ['$http', '$scope', function($http, $scope) {
+  .controller('PeopleController', ['$http', function($http) {
     const mainRoute = 'http://localhost:3000/api/people';
-    $scope.smokeTest = 'Smoke Test';
-    $scope.people = [];
-    $scope.getPeople = function() {
+    this.smokeTest = 'Smoke Test';
+    this.people = [];
+    this.editing = false;
+    this.showPeople = false;
+    this.getPeople = function() {
+    console.log('GET PEOPLE HIT')
       $http.get(mainRoute)
         .then((result) => {
-          for(var i = 0; i < result.data.people.length; i++) {
-            $scope.people[i] = result.data.people[i]
-          }
+          this.people = result.data;
         },
       function(error) {
         console.log('ERRROR');
       })
     }
-    $scope.createPerson = function(newPerson) {
+    this.createPerson = function(newPerson) {
+      console.log('CLIENT SIDE' + newPerson)
       $http.post(mainRoute, newPerson)
-      .then( function(res){
-        $scope.people.push(newPerson);
+      .then((res) => {
+        this.people.push(newPerson);
+        console.log(this.people);
       })
     }
-    $scope.removePerson = function(person) {
-      $http.delete(mainRoute + '/' + person._id)
+    this.createPerson.rendered = null;
+
+    this.removePerson = function(person) {
+      $http.delete(mainRoute + '/' + person)
       .then((res) => {
-        $scope.people = $scope.people.filter((p) => {
+        this.people = this.people.filter((p) => {
           p._id != person._id
-          $scope.getPeople();
+          this.getPeople();
         })
       })
     }
-    $scope.updatePerson = function(person) {
-      console.log('UPDATE PERSON HAS BEEN HIT!!!');
-      $http.put(mainRoute + '/' + person._id)
+    this.updatePerson = function(person) {
+      console.log('UPDATE PERSON HAS BEEN HIT!!! WITH' + person);
+      this.updatePerson.rendered = null;
+      console.log('PERSON ID ' + person._id);
+      $http.put(mainRoute + '/' + person._id, person)
       .then((res) => {
-        $scope.people = $scope.people.filter((p) => {
+        this.editing = false;
+        this.people = this.people.filter((p) => {
           p._id = person._id
         })
       })
