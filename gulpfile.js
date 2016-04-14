@@ -28,7 +28,7 @@ gulp.task('del-build', () => {
 
 gulp.task('copy-html', () => {
   gulp.src(__dirname + '/public/index.html')
-  .pipe(gulp.dest(__dirname + '/build'));
+  .pipe(gulp.dest(__dirname + '/public/build'));
 });
 
 gulp.task('copy-css', () => {
