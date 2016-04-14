@@ -24,7 +24,8 @@ const app = angular.module('PeopleApp', [])
     this.createPerson = function(newPerson) {
       $http.post(mainRoute, newPerson)
       .then((res) => {
-        this.people.push(res.person);
+        this.people.push(res.data);
+        // debugger;
       })
     }
     this.createPerson.rendered = null;
@@ -34,7 +35,6 @@ const app = angular.module('PeopleApp', [])
       .then((res) => {
         this.people = this.people.filter((p) => {
           p._id != person._id
-          // this.getPeople();
         })
       })
     }

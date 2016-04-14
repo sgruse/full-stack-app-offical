@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Client Side!!!</title>
     <link href='https://fonts.googleapis.com/css?family=Roboto|Lora' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="./style.css" type="text/css">
+    <link rel="stylesheet" href="style.css" type="text/css">
   </head>
   <body data-ng-app="PeopleApp">
     <main class="container">
@@ -13,18 +13,18 @@
 
         <section class="header-and-button">
           <h2>People</h2>
-          <button class="lime-button" type="button" ng-click="peopleCtrl.createPerson.rendered = person._id">Create Person</button>
+          <button id="create-button" class="lime-button" type="button" ng-click="peopleCtrl.createPerson.rendered = person._id">Create Person</button>
         </section>
 
         <form name="people-form" ng-show="peopleCtrl.createPerson.rendered === person._id" ng-submit="peopleCtrl.createPerson.rendered = null">
-          <span>Name:</span><input type="text" ng-model="person.name" ng-model-options="{debounce: 500}" ng-minlength="1" ng-maxlength="15" required>
-          <span>Age:</span><input type="number" ng-model="person.age" ng-model-options="{debounce: 500}" required>
-          <button type="submit" class="save-button" ng-click="peopleCtrl.createPerson(person)">Save Person</button>
+          <span>Name:</span><input id="name-field" type="text" ng-model="person.name" ng-model-options="{debounce: 500}" ng-minlength="1" ng-maxlength="15" required>
+          <span>Age:</span><input id="age-field" type="number" ng-model="person.age" ng-model-options="{debounce: 500}" required>
+          <button id="save-button" type="submit" class="save-button" ng-click="peopleCtrl.createPerson(person)">Save Person</button>
           <button type="reset" class="cancel-button" ng-click="peopleCtrl.createPerson.rendered = null">Cancel</button>
         </form>
 
         <section>
-          <li ng-repeat="people in peopleCtrl.people">{{people.name}}</li>
+          <li id="result-name" ng-repeat="people in peopleCtrl.people">{{people.name}}</li>
         </section>
         <button type="submit" ng-click="peopleCtrl.getPeople()">Show Entries</button>
 
