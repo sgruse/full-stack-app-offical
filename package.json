@@ -12,8 +12,10 @@
   "dependencies": {
     "angular": "^1.5.3",
     "body-parser": "^1.15.0",
+    "css-loader": "^0.23.1",
     "express": "^4.13.4",
-    "mongoose": "^4.4.12"
+    "mongoose": "^4.4.12",
+    "style-loader": "^0.13.1"
   },
   "devDependencies": {
     "del": "^2.2.0",

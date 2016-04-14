@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Client Side!!!</title>
+    <link rel="stylesheet" href="./app/css/style.css" type="text/css">
   </head>
   <body data-ng-app="PeopleApp">
     <main class="container">
@@ -44,7 +45,7 @@
       <form name="person-form" ng-show="peopleCtrl.updatePerson.rendered === person._id" ng-submit="peopleCtrl.updatePerson.rendered = null">
         <span>Name:</span><input type="text" ng-model="person.name" ng-model-options="{debounce: 500}" ng-minlength="3" ng-maxlength="15" required><br>
         <span>Age:</span><input type="number" ng-model="person.age" ng-model-options="{debounce: 500}" required><br>
-        <button class="save-button" type="submit" ng-click="peopleCtrl.updatePerson(person)">Save Changes</button>
+        <button class="save-button" type="submit" ng-click="peopleCtrl.updatePerson(person); peopleCtrl.getPeople()">Save Changes</button>
         <button class="discard-button" type="reset" ng-click="peopleCtrl.updatePerson = null; peopleCtrl.updateCustomer.rendered = null">Discard Changes</button>
       </form>
     </section>
