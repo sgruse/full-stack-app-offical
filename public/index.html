@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Client Side!!!</title>
-    <link rel="stylesheet" href="./app/css/style.css" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto|Lora' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="./style.css" type="text/css">
   </head>
   <body data-ng-app="PeopleApp">
     <main class="container">
@@ -31,6 +32,7 @@
           <ul>
             <li class="info-line"><span>Name: </span>{{person.name}}</li><br>
             <li class="info-line"><span>Age: </span>{{person.age}}</li><br>
+            <li class="info-line"><span>Id: </span>{{person._id}}</li><br>
           </ul>
           <button class="green-button" type="submit" ng-click="peopleCtrl.updatePerson.rendered = person._id">update record</button>
           <button class="red-button" type="button" ng-click="peopleCtrl.removePerson(person._id)">delete record</button>

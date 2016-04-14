@@ -8,14 +8,12 @@ apiRouter.route('/people')
     People.find({}, (err, people) => {
       if (err) throw err;
       res.json(people);
-      res.end();
     });
   })
   .post((req, res) => {
       var newPerson = new People(req.body);
       newPerson.save((err, person) => {
       res.json(person);
-      res.end();
     });
 })
 
