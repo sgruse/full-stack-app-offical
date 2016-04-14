@@ -7,16 +7,13 @@ apiRouter.route('/people')
   .get((req, res) => {
     People.find({}, (err, people) => {
       if (err) throw err;
-      res.json({people});
+      res.json(people);
       res.end();
     });
   })
   .post((req, res) => {
-      console.log('BACK END POST ROUTE HAS BEEN HIT ');
       var newPerson = new People(req.body);
-      console.log('NEW PERSON : ' + newPerson);
       newPerson.save((err, person) => {
-      console.log('NEWLY SAVED PERSON : ' + person);
       res.json(person);
       res.end();
     });
@@ -30,14 +27,10 @@ apiRouter.route('/people/:id')
     })
   })
   .put((req, res) => {
-    req.on('data', (data) => {
-    req.body = JSON.parse(data);
-    console.log('DATA COMING FROM ANGULAR PUT ROUTEA' + req.body);
     People.findByIdAndUpdate({_id: req.params.id}, req.body, (err, person) => {
       if (err) throw err;
       res.json(req.body);
     })
-  })
 })
   .delete((req, res) => {
     console.log('DELETE ROUTE HAS BEEN HIT WITH : ' + req.params.id);
