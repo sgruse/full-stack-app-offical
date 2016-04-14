@@ -1,5 +1,7 @@
 'use strict';
 
+require(__dirname + '/../css/style.css');
+
 const angular = require('angular');
 
 const app = angular.module('PeopleApp', [])
@@ -20,11 +22,9 @@ const app = angular.module('PeopleApp', [])
       })
     }
     this.createPerson = function(newPerson) {
-      console.log('CLIENT SIDE' + newPerson)
       $http.post(mainRoute, newPerson)
       .then((res) => {
-        this.people.push(newPerson);
-        console.log(this.people);
+        this.people.push(res.person);
       })
     }
     this.createPerson.rendered = null;
@@ -34,7 +34,7 @@ const app = angular.module('PeopleApp', [])
       .then((res) => {
         this.people = this.people.filter((p) => {
           p._id != person._id
-          this.getPeople();
+          // this.getPeople();
         })
       })
     }
