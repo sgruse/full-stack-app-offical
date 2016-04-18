@@ -12,7 +12,6 @@ const app = angular.module('PeopleApp', [])
     this.editing = false;
     this.showPeople = false;
     this.getPeople = function() {
-    console.log('GET PEOPLE HIT')
       $http.get(mainRoute)
         .then((result) => {
           this.people = result.data;
@@ -24,7 +23,8 @@ const app = angular.module('PeopleApp', [])
     this.createPerson = function(newPerson) {
       $http.post(mainRoute, newPerson)
       .then((res) => {
-        this.people.push(res.person);
+        this.people.push(res.data);
+        // debugger;
       })
     }
     this.createPerson.rendered = null;
@@ -34,7 +34,6 @@ const app = angular.module('PeopleApp', [])
       .then((res) => {
         this.people = this.people.filter((p) => {
           p._id != person._id
-          // this.getPeople();
         })
       })
     }

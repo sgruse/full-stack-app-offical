@@ -58,7 +58,6 @@
 	    this.editing = false;
 	    this.showPeople = false;
 	    this.getPeople = function() {
-	    console.log('GET PEOPLE HIT')
 	      $http.get(mainRoute)
 	        .then((result) => {
 	          this.people = result.data;
@@ -70,7 +69,8 @@
 	    this.createPerson = function(newPerson) {
 	      $http.post(mainRoute, newPerson)
 	      .then((res) => {
-	        this.people.push(res.person);
+	        this.people.push(res.data);
+	        // debugger;
 	      })
 	    }
 	    this.createPerson.rendered = null;
@@ -80,7 +80,6 @@
 	      .then((res) => {
 	        this.people = this.people.filter((p) => {
 	          p._id != person._id
-	          // this.getPeople();
 	        })
 	      })
 	    }
@@ -134,7 +133,7 @@
 
 
 	// module
-	exports.push([module.id, "\n.save-button {\n  color: green;\n}\n", ""]);
+	exports.push([module.id, "/*\n.save-button {\n  color: green;\n}\n\n* {\n  background-color: grey;\n}*/\n", ""]);
 
 	// exports
 

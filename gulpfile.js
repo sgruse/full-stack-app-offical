@@ -8,11 +8,13 @@ let del = require('del');
 
 let paths = ['*.js', 'models/*.js', 'routes/*.js', 'test/*.js', 'public/js/*.js'];
 
-gulp.task('eslint', () => {
-  gulp.src(paths)
-  .pipe(lint())
-  .pipe(lint.format());
-});
+const sources = {
+  html: '/public/index.html',
+  js: '/public/js/index.js',
+  test: '/test/karma-testing.js'
+};
+
+
 //
 // gulp.task('test', () => {
 //   gulp.src(__dirname + '/test/*.js')
@@ -56,4 +58,19 @@ gulp.task('watch', () =>{
   gulp.watch(paths);
 });
 
-gulp.task('default', ['eslint', 'del-build', 'webpack', 'copy-html', 'copy-css']);
+
+
+gulp.task('bundle:test', () => {
+  return gulp.src(__dirname + sources.test)
+  .pipe(webpack({output: {filename: 'test_bundle.js'}}))
+  .pipe(gulp.dest('./test'));
+});
+
+gulp.task('eslint', () => {
+  gulp.src(paths)
+  .pipe(lint())
+  .pipe(lint.format());
+});
+
+
+gulp.task('default', ['eslint', 'del-build', 'webpack', 'bundle:test', 'copy-html', 'copy-css']);
