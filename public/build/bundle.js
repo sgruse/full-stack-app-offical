@@ -58,7 +58,6 @@
 	    this.editing = false;
 	    this.showPeople = false;
 	    this.getPeople = function() {
-	    console.log('GET PEOPLE HIT')
 	      $http.get(mainRoute)
 	        .then((result) => {
 	          this.people = result.data;
