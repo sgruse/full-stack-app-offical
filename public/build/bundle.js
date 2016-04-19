@@ -54,7 +54,7 @@
 	  .controller('PeopleController', ['$http', function($http) {
 	    const mainRoute = 'http://localhost:3000/api/people';
 	    this.smokeTest = 'Smoke Test';
-	    this.people = [];
+	    this.people = ['person'];
 	    this.editing = false;
 	    this.showPeople = false;
 	    this.getPeople = function() {
@@ -70,7 +70,7 @@
 	      $http.post(mainRoute, newPerson)
 	      .then((res) => {
 	        this.people.push(res.data);
-	        // debugger;
+	        // this.person = {};
 	      })
 	    }
 	    this.createPerson.rendered = null;
@@ -84,7 +84,7 @@
 	      })
 	    }
 	    this.updatePerson = function(person) {
-	      console.log('UPDATE PERSON HAS BEEN HIT!!! WITH' + person);
+	      console.log('UPDATE PERSON HAS BEEN HIT!!! WITH', person);
 	      this.updatePerson.rendered = null;
 	      console.log('PERSON ID ' + person._id);
 	      $http.put(mainRoute + '/' + person._id, person)

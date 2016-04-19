@@ -62,7 +62,9 @@ gulp.task('watch', () =>{
 
 gulp.task('bundle:test', () => {
   return gulp.src(__dirname + sources.test)
-  .pipe(webpack({output: {filename: 'test_bundle.js'}}))
+  .pipe(webpack({output: {filename: 'test_bundle.js'},
+  watch: true
+}))
   .pipe(gulp.dest('./test'));
 });
 
