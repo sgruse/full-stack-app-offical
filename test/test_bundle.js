@@ -44,45 +44,107 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {__webpack_require__(2);
-	const angular = __webpack_require__(4);
-	__webpack_require__(6);
+	__webpack_require__(1);
+	const angular = __webpack_require__(3);
+	__webpack_require__(5);
 
-	beforeEach(module('PeopleApp'));
+	describe('It should test soething', () => {
+	  var peopleController;
+	  it('Should have a test', () => {
+	    expect(false).toBe(false);
+	  });
+	  beforeEach(angular.mock.module('PeopleApp'))
+	  beforeEach(angular.mock.inject(function($controller) {
+	    peopleController = $controller('PeopleController');
+	  }))
+	  it('Should construct and controller', () => {
+	    expect(typeof peopleController).toBe('object');
+	    expect(peopleController.people[0]).toBe('person');
+	    expect(typeof peopleController.getPeople).toBe('function');
+	  });
+	  describe('REST tests', () => {
+	    var $httpBackend;
+	    beforeEach(angular.mock.inject(function(_$httpBackend_){
+	      $httpBackend = _$httpBackend_;
+	    }));
+	    afterEach(() => {
+	      $httpBackend.verifyNoOutstandingExpectation();
+	      $httpBackend.verifyNoOutstandingRequest();
+	    });
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)(module)))
+	    it('Should get all people', () => {
+	      $httpBackend.expectGET('http://localhost:3000/api/people')
+	      .respond(200, {data: [{name: 'Johnsoville'}]});
+	      peopleController.getPeople();
+	      $httpBackend.flush();
+	      // console.log('get route testing', peopleController.people.data);
+	      expect(peopleController.people.data.length).toBeGreaterThan(0);
+	      expect(peopleController.people.data[0].name).toBe('Johnsoville');
+
+	      // WHY DID I HAVE TO JIG THIS TOGETHER WITH DATA ?
+	    });
+
+	    it('Should create a new person', () => {
+	      $httpBackend.expectPOST('http://localhost:3000/api/people', {name: 'post person'})
+
+	      // SHOULDN"T THIS BE AN OBJECT WITH THE BELOW DATA
+	      // WHATS THE LINK BETWEEN THE NAME SENT ABOVE AND THE NAME IN THE OBJECT BELOW
+
+	      .respond(200, {name: 'post person', age: 27, _id:'uniqueid'});
+	      peopleController.createPerson({name: 'post person'})
+	      $httpBackend.flush()
+	      expect(peopleController.people.length).toBe(2);
+	      expect(peopleController.people[1].name).toBe('post person')
+
+	      // WHY DOES HE HAVE NEW PERSON SET TO AN EMPTY OBJECT IN HIS APP.JS
+	    });
+
+	    it('Should delete a person', () => {
+	      $httpBackend.expectDELETE('http://localhost:3000/api/people/19')
+	      .respond(200, 'deleted');
+	      peopleController.people.push({name: 'sam', _id: 19});
+
+	      // IS THIS DATA ABOVE THE RESET DATA FOR THIS ROUTE ONLY? WONT ADD UP
+
+	      peopleController.removePerson(19);
+	      $httpBackend.flush();
+	      // console.log('DELETE ROUTE PEOPLE ARRAY', peopleController.people);
+	      expect(peopleController.people.length).toBe(0);
+	      expect(peopleController.people.every((p) => p._id != 19)).toBe(true);
+
+	      // WHY IS THIS WORKING WHEN THERE SHOULD STILL BE ONE IN HERE
+	    });
+
+	    it('Should update a person', () => {
+	      var updatePerson = {name: 'johnny wat', _id: 15};
+	      $httpBackend.expectPUT('http://localhost:3000/api/people/15')
+	      .respond(200, 'updated');
+	      peopleController.people.push(updatePerson);
+	      peopleController.updatePerson(updatePerson);
+	      $httpBackend.flush();
+	      expect(updatePerson.editing).toBe(false);
+	    });
+
+
+	  });
+	})
+
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	module.exports = function(module) {
-		if(!module.webpackPolyfill) {
-			module.deprecate = function() {};
-			module.paths = [];
-			// module.parent = undefined by default
-			module.children = [];
-			module.webpackPolyfill = 1;
-		}
-		return module;
-	}
-
-
-/***/ },
-/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	__webpack_require__(3);
+	__webpack_require__(2);
 
-	const angular = __webpack_require__(4);
+	const angular = __webpack_require__(3);
 
 	const app = angular.module('PeopleApp', [])
 	  .controller('PeopleController', ['$http', function($http) {
 	    const mainRoute = 'http://localhost:3000/api/people';
 	    this.smokeTest = 'Smoke Test';
-	    this.people = [];
+	    this.people = ['person'];
 	    this.editing = false;
 	    this.showPeople = false;
 	    this.getPeople = function() {
@@ -98,7 +160,7 @@
 	      $http.post(mainRoute, newPerson)
 	      .then((res) => {
 	        this.people.push(res.data);
-	        // debugger;
+	        // this.person = {};
 	      })
 	    }
 	    this.createPerson.rendered = null;
@@ -112,7 +174,7 @@
 	      })
 	    }
 	    this.updatePerson = function(person) {
-	      console.log('UPDATE PERSON HAS BEEN HIT!!! WITH' + person);
+	      console.log('UPDATE PERSON HAS BEEN HIT!!! WITH', person);
 	      this.updatePerson.rendered = null;
 	      console.log('PERSON ID ' + person._id);
 	      $http.put(mainRoute + '/' + person._id, person)
@@ -127,7 +189,7 @@
 
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports) {
 
 	/*
@@ -141,15 +203,15 @@
 
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(5);
+	__webpack_require__(4);
 	module.exports = angular;
 
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	/**
@@ -30868,7 +30930,7 @@
 	!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports) {
 
 	/**
