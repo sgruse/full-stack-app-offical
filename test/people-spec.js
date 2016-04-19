@@ -53,7 +53,7 @@ it('should make a new person for further testing', function() {
     element(by.css('input.update-age')).clear();
     element(by.css('input.update-age')).sendKeys(100);
 
-    // IF I LINK TO MODEL THEN IT SAYS ELEMENTS ARE HIDDEN
+// IF I LINK TO MODEL THEN IT SAYS ELEMENTS ARE HIDDEN
 
     element(by.css('button.save-update')).click();
     showButton.click();
