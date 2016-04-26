@@ -49,8 +49,10 @@
 	const angular = __webpack_require__(1);
 
 	__webpack_require__(3);
-	__webpack_require__(7);
-	__webpack_require__(8);
+	__webpack_require__(9);
+	__webpack_require__(4);
+	// require('./js/index');
+	__webpack_require__(10);
 
 
 /***/ },
@@ -30784,13 +30786,83 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	const angular = __webpack_require__(1);
+	// require (__dirname + './app/module.js');
+	const app = angular.module('PeopleApp', [])
+
+	__webpack_require__(4);
+	__webpack_require__(8)(app)
+
+
+	  app.controller('PeopleController', ['$http', 'PeopleService', function($http, PeopleService) {
+	    // const mainRoute = 'http://localhost:3000/api/people';
+	    const vm = this;
+	    const peopleResource = PeopleService('people');
+
+	    vm.smokeTest = 'Smoke Test';
+	    vm.people = ['person'];
+	    vm.editing = false;
+	    vm.showPeople = false;
+
+	    vm.getPeople = function() {
+	      peopleResource.getAll()
+	        .then((result) => {
+	          vm.people = result.data;
+	        },
+	      function(error) {
+	        console.log('ERRROR');
+	      })
+	    }
+	    vm.createPerson = function(person) {
+	      peopleResource.create(person)
+	      .then((res) => {
+	        vm.people.push(res.data);
+	        // vm.person = {};
+	      })
+	    }
+	    vm.createPerson.rendered = null;
+
+	    vm.removePerson = function(person) {
+	      peopleResource.delete(person)
+	      .then((res) => {
+	        vm.people = vm.people.filter((p) => {
+	          return p._id != person
+	        })
+	      })
+	    }
+	    vm.updatePerson = function(person) {
+	      vm.updatePerson.rendered = null;
+	      peopleResource.update(person)
+	      .then((res) => {
+	        vm.editing = false;
+	        vm.people = vm.people.filter((p) => {
+	          return p._id == person._id
+	        })
+	      })
+	    }
+	  }])
+
+	  .directive('peopleDirective', function() {
+	    return {
+	      restrict: 'E',
+	      templateUrl: './peopleView.html'
+	    }
+	  })
+
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(4);
+	var content = __webpack_require__(5);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(6)(content, {});
+	var update = __webpack_require__(7)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -30807,10 +30879,10 @@
 	}
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(5)();
+	exports = module.exports = __webpack_require__(6)();
 	// imports
 
 
@@ -30821,7 +30893,7 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	/*
@@ -30877,7 +30949,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31129,63 +31201,64 @@
 
 
 /***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/* 8 */
+/***/ function(module, exports) {
 
 	'use strict';
-	// require (__dirname + './app/module.js');
-	__webpack_require__(3);
 
-	const angular = __webpack_require__(1);
+	module.exports = function(app) {
+	  app.factory('PeopleService', ['$http', function($http) {
+	    const mainRoute = 'http://localhost:3000/api/';
 
-	const app = angular.module('PeopleApp', [])
-	  .controller('PeopleController', ['$http', function($http) {
-	    const mainRoute = 'http://localhost:3000/api/people';
-	    this.smokeTest = 'Smoke Test';
-	    this.people = ['person'];
-	    this.editing = false;
-	    this.showPeople = false;
-	    this.getPeople = function() {
-	      $http.get(mainRoute)
-	        .then((result) => {
-	          this.people = result.data;
-	        },
-	      function(error) {
-	        console.log('ERRROR');
-	      })
+	    function Resource(resourceName) {
+	      this.resourceName = resourceName;
 	    }
-	    this.createPerson = function(newPerson) {
-	      $http.post(mainRoute, newPerson)
-	      .then((res) => {
-	        this.people.push(res.data);
-	        // this.person = {};
-	      })
-	    }
-	    this.createPerson.rendered = null;
 
-	    this.removePerson = function(person) {
-	      $http.delete(mainRoute + '/' + person)
-	      .then((res) => {
-	        this.people = this.people.filter((p) => {
-	          return p._id != person
-	        })
-	      })
+	    Resource.prototype.getAll = function() {
+	      return $http.get(mainRoute + this.resourceName)
 	    }
-	    this.updatePerson = function(person) {
-	      this.updatePerson.rendered = null;
-	      $http.put(mainRoute + '/' + person._id, person)
-	      .then((res) => {
-	        this.editing = false;
-	        this.people = this.people.filter((p) => {
-	          return p._id == person._id
-	        })
-	      })
+
+	    Resource.prototype.create = function(data) {
+	      return $http.post(mainRoute + this.resourceName, data)
 	    }
-	  }]);
+
+	    Resource.prototype.delete = function(data) {
+	      return $http.delete(mainRoute + this.resourceName + '/' + data)
+	    }
+
+	    Resource.prototype.update = function(data) {
+	      return $http.put(mainRoute + this.resourceName + '/' + data._id, data)
+	    }
+
+	    return function(resourceName) {
+	      return new Resource(resourceName);
+	    }
+	  }])
+	}
 
 
 /***/ },
-/* 8 */
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	const angular = __webpack_require__(1);
+
+	(function() {
+	  angular.module('HeadModule', [])
+
+	  .directive('headerDirective', function() {
+	    return {
+	      restrict: 'E',
+	      templateUrl: './headerView.html'
+	    }
+	  })
+	})();
+
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31193,7 +31266,7 @@
 	const angular = __webpack_require__(1);
 
 	(function () {
-	  angular.module('App', ['PeopleApp'])
+	  angular.module('App', ['PeopleApp', 'HeadModule'])
 	})()
 
 

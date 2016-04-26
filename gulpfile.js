@@ -29,7 +29,10 @@ gulp.task('del-build', () => {
 });
 
 gulp.task('copy-html', () => {
-  gulp.src(__dirname + '/public/index.html')
+  gulp.src([__dirname + '/public/index.html',
+  './public/components/header/headerView.html',
+  './public/components/people/peopleView.html'
+])
   .pipe(gulp.dest(__dirname + '/public/build'));
 });
 

@@ -45,8 +45,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	const angular = __webpack_require__(3);
-	__webpack_require__(5);
+	const angular = __webpack_require__(2);
+	__webpack_require__(4);
 
 	describe('It should test soething', () => {
 	  var peopleController;
@@ -119,84 +119,77 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
-	// require (__dirname + './app/module.js');
-	__webpack_require__(2);
-
-	const angular = __webpack_require__(3);
-
-	const app = angular.module('PeopleApp', [])
-	  .controller('PeopleController', ['$http', function($http) {
-	    const mainRoute = 'http://localhost:3000/api/people';
-	    this.smokeTest = 'Smoke Test';
-	    this.people = ['person'];
-	    this.editing = false;
-	    this.showPeople = false;
-	    this.getPeople = function() {
-	      $http.get(mainRoute)
-	        .then((result) => {
-	          this.people = result.data;
-	        },
-	      function(error) {
-	        console.log('ERRROR');
-	      })
-	    }
-	    this.createPerson = function(newPerson) {
-	      $http.post(mainRoute, newPerson)
-	      .then((res) => {
-	        this.people.push(res.data);
-	        // this.person = {};
-	      })
-	    }
-	    this.createPerson.rendered = null;
-
-	    this.removePerson = function(person) {
-	      $http.delete(mainRoute + '/' + person)
-	      .then((res) => {
-	        this.people = this.people.filter((p) => {
-	          return p._id != person
-	        })
-	      })
-	    }
-	    this.updatePerson = function(person) {
-	      this.updatePerson.rendered = null;
-	      $http.put(mainRoute + '/' + person._id, person)
-	      .then((res) => {
-	        this.editing = false;
-	        this.people = this.people.filter((p) => {
-	          return p._id == person._id
-	        })
-	      })
-	    }
-	  }]);
+	// 'use strict';
+	// // require (__dirname + './app/module.js');
+	// require(__dirname + '/../css/style.css');
+	//
+	// const angular = require('angular');
+	//
+	// const app = angular.module('PeopleApp', [])
+	//   .controller('PeopleController', ['$http', function($http) {
+	//     const mainRoute = 'http://localhost:3000/api/people';
+	//     this.smokeTest = 'Smoke Test';
+	//     this.people = ['person'];
+	//     this.editing = false;
+	//     this.showPeople = false;
+	//     this.getPeople = function() {
+	//       $http.get(mainRoute)
+	//         .then((result) => {
+	//           this.people = result.data;
+	//         },
+	//       function(error) {
+	//         console.log('ERRROR');
+	//       })
+	//     }
+	//     this.createPerson = function(newPerson) {
+	//       $http.post(mainRoute, newPerson)
+	//       .then((res) => {
+	//         this.people.push(res.data);
+	//         // this.person = {};
+	//       })
+	//     }
+	//     this.createPerson.rendered = null;
+	//
+	//     this.removePerson = function(person) {
+	//       $http.delete(mainRoute + '/' + person)
+	//       .then((res) => {
+	//         this.people = this.people.filter((p) => {
+	//           return p._id != person
+	//         })
+	//       })
+	//     }
+	//     this.updatePerson = function(person) {
+	//       this.updatePerson.rendered = null;
+	//       $http.put(mainRoute + '/' + person._id, person)
+	//       .then((res) => {
+	//         this.editing = false;
+	//         this.people = this.people.filter((p) => {
+	//           return p._id == person._id
+	//         })
+	//       })
+	//     }
+	//   }])
+	//
+	//   .directive('peopleDirective', function() {
+	//     return {
+	//       restrict: 'E',
+	//       template: '<h1>Custom directive is working</h2>'
+	//     }
+	//   })
 
 
 /***/ },
 /* 2 */
-/***/ function(module, exports) {
-
-	/*
-	.save-button {
-	  color: green;
-	}
-
-	* {
-	  background-color: grey;
-	}*/
-
-
-/***/ },
-/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(3);
 	module.exports = angular;
 
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports) {
 
 	/**
@@ -30915,7 +30908,7 @@
 	!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports) {
 
 	/**

@@ -1,0 +1,38 @@
+<main ng-init="PeopleController.getPeople()" ng-controller="PeopleController as peopleCtrl">
+
+
+  <section class="header-and-button">
+    <h2>People</h2>
+    <button class="lime-button" type="button" ng-click="peopleCtrl.createPerson.rendered = person._id">Create Person</button>
+  </section>
+
+  <form name="people-form" ng-show="peopleCtrl.createPerson.rendered === person._id" ng-submit="peopleCtrl.createPerson.rendered = null">
+    <span>Name:</span><input type="text" ng-model="person.name" ng-model-options="{debounce: 500}" ng-minlength="1" ng-maxlength="15" required>
+    <span>Age:</span><input type="number" ng-model="person.age" ng-model-options="{debounce: 500}" required>
+    <button type="submit" class="save-button" ng-click="peopleCtrl.createPerson(person)">Save Person</button>
+    <button type="reset" class="cancel-button" ng-click="peopleCtrl.createPerson.rendered = null">Cancel</button>
+  </form>
+
+  <section>
+    <li ng-repeat="people in peopleCtrl.people">{{people.name}}</li>
+  </section>
+  <button  class="show-button" type="submit" ng-click="peopleCtrl.getPeople()">Show Entries</button>
+
+  <section ng-repeat="person in peopleCtrl.people track by $index">
+    <ul>
+      <li class="info-line"><span>Name: </span>{{person.name}}</li><br>
+      <li class="info-line"><span>Age: </span>{{person.age}}</li><br>
+      <li class="info-line"><span>Id: </span>{{person._id}}</li><br>
+    </ul>
+    <button class="green-button" type="submit" ng-click="peopleCtrl.updatePerson.rendered = person._id">update record</button>
+    <button class="red-button" type="button" ng-click="peopleCtrl.removePerson(person._id)">delete record</button>
+
+    <form name="person-form" ng-show="peopleCtrl.updatePerson.rendered === person._id" ng-submit="peopleCtrl.updatePerson.rendered = null">
+      <span>Name:</span><input class="update-name" type="text" ng-model="person.name" ng-model-options="{debounce: 500}" ng-minlength="3" ng-maxlength="15" required><br>
+      <span>Age:</span><input  class="update-age" type="number" ng-model="person.age" ng-model-options="{debounce: 500}" required><br>
+      <button class="save-update" type="submit" ng-click="peopleCtrl.updatePerson(person); peopleCtrl.getPeople()">Save Changes</button>
+      <button class="discard-button" type="reset" ng-click="peopleCtrl.updatePerson = null; peopleCtrl.updateCustomer.rendered = null">Discard Changes</button>
+    </form>
+  </section>
+
+</main>

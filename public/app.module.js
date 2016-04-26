@@ -3,5 +3,5 @@
 const angular = require('angular');
 
 (function () {
-  angular.module('App', ['PeopleApp'])
+  angular.module('App', ['PeopleApp', 'HeadModule'])
 })()
