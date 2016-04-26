@@ -29,7 +29,10 @@ gulp.task('del-build', () => {
 });
 
 gulp.task('copy-html', () => {
-  gulp.src(__dirname + '/public/index.html')
+  gulp.src([__dirname + '/public/index.html',
+  './public/components/header/headerView.html',
+  './public/components/people/peopleView.html'
+])
   .pipe(gulp.dest(__dirname + '/public/build'));
 });
 
@@ -39,7 +42,7 @@ gulp.task('copy-css', () => {
 });
 
 gulp.task('webpack', () => {
-  return gulp.src(__dirname + '/public/js/index.js')
+  return gulp.src(__dirname + '/public/entry.js')
   .pipe(webpack({
     watch: true,
     module: {
