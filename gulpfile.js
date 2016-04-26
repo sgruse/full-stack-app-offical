@@ -39,7 +39,7 @@ gulp.task('copy-css', () => {
 });
 
 gulp.task('webpack', () => {
-  return gulp.src(__dirname + '/public/js/index.js')
+  return gulp.src(__dirname + '/public/entry.js')
   .pipe(webpack({
     watch: true,
     module: {

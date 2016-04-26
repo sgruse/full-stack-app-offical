@@ -1,5 +1,5 @@
 'use strict';
-
+// require (__dirname + './app/module.js');
 require(__dirname + '/../css/style.css');
 
 const angular = require('angular');

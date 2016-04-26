@@ -122,7 +122,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-
+	// require (__dirname + './app/module.js');
 	__webpack_require__(2);
 
 	const angular = __webpack_require__(3);
