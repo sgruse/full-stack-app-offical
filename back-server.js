@@ -8,6 +8,9 @@ var port = process.env.PORT || 3000;
 var apiRouter = express.Router();
 mongoose.connect('mongodb://localhost/db');
 
+const jwtAuth = require(__dirname + '/lib/jwt_auth.js');
+
+
 // CARS ROUTE
 // require('./routes/cars-route')(apiRouter);
 //PEOPLE ROUTE
@@ -15,6 +18,11 @@ mongoose.connect('mongodb://localhost/db');
 app.use(bodyParser.json());
 
 require(__dirname + '/routes/people-route')(apiRouter);
+require(__dirname + '/routes/user_routes')(apiRouter);
+// require(__dirname + '/routes/auth_routes')(apiRouter);
+const authRouter = require(__dirname + '/routes/auth_routes')
+
+
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
@@ -23,6 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(authRouter)
 app.use('/api', apiRouter);
 
 app.listen(port, () => {

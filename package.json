@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.5.3",
+    "angular-route": "^1.5.5",
     "bcrypt": "^0.8.6",
     "body-parser": "^1.15.0",
     "css-loader": "^0.23.1",

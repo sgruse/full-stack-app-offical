@@ -2,10 +2,10 @@
 
 const angular = require('angular');
 
-// require('angular-route');
+require('angular-route');
 
 // require (__dirname + './app/module.js');
-const app = angular.module('PeopleApp', [])
+const app = angular.module('PeopleApp', ['ngRoute'])
 
 require(__dirname + '/../../css/style.css');
 require('./peopleService')(app)
@@ -13,8 +13,8 @@ require('./peopleService')(app)
 require(__dirname + '/../services/auth_service')(app);
 require('./error_service')(app);
 
-  app.controller('PeopleController', ['$http', 'PeopleService', 'ErrorService', 'AuthService',
-  function($http, PeopleService, ErrorService, AuthService) {
+  app.controller('PeopleController', ['$http', '$location', 'PeopleService', 'ErrorService', 'AuthService',
+  function($http, $location, PeopleService, ErrorService, AuthService) {
 
     const vm = this;
     const peopleResource = PeopleService('people');
@@ -32,7 +32,8 @@ require('./error_service')(app);
           vm.people = result.data;
         },
       function(error) {
-        console.log('ERRROR');
+        ErrorService('Please sign in')
+        $location.path('/singUp');
       })
     }
     vm.createPerson = function(person) {
@@ -64,6 +65,7 @@ require('./error_service')(app);
     }
 
     vm.signUp = function(user) {
+      console.log('ONE SIGN UP OBJECT', user);
       AuthService.createUser(user, function(err, res) {
         if (err) return ErrorService('Problem Creating User');
         $location.path('/home');
@@ -81,14 +83,19 @@ require('./error_service')(app);
 
   app.config(['$routeProvider', function(router) {
     router
-      .when('signUp', {
-        controller: 'PeopleController as peoplectrl',
+      .when('/signUp', {
+        controller: 'PeopleController',
         controllerAs: 'peoplectrl',
+        // templateUrl: './signUp.html'
         templateUrl: './signUp.html'
+
+      })
+      .when('/', {
+        redirect: '/signUp'
       })
       .when('/home', {
         controller: 'PeopleController',
         controllerAs: 'peoplectrl',
-        templateUrl: './home.html'
+        templateUrl: './peopleView.html'
       })
   }])

@@ -4,10 +4,11 @@ module.exports = function(app) {
     var url = 'http://localhost:3000';
     var auth = {
       createUser(user, cb) {
+        console.log('TWO AUTH SERVICE GETS USER OBJECT FROM PEOPLCTRL', user);
         cb || function() {};
-        $http.post(url + '/signup')
+        $http.post(url + '/signup', user)
           .then((res) => {
-            token = $window.loacalStorage.token = res.data.token;
+            token = $window.localStorage.token = res.data.token;
             cb(null, res)
           }, (err) => {
             cb(err)
@@ -24,7 +25,7 @@ module.exports = function(app) {
     },
     signIn(user, cb) {
       cb = cb || function() {};
-      $http.get(url + '/signin', {
+      $http.get(url + '/signIn', {
         headers: {
           authorization: 'Basic ' + btoa(user.email + ':' + user.password)
         }
