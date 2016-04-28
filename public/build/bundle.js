@@ -49,10 +49,11 @@
 	const angular = __webpack_require__(1);
 
 	__webpack_require__(3);
-	__webpack_require__(9);
 	__webpack_require__(4);
-	// require('./js/index');
-	__webpack_require__(10);
+	// require('./css/style.css');
+	// require('./sass/sass.scss');
+	__webpack_require__(5);
+	__webpack_require__(6);
 
 
 /***/ },
@@ -30789,17 +30790,25 @@
 	'use strict';
 
 	const angular = __webpack_require__(1);
+
+	// require('angular-route');
+
 	// require (__dirname + './app/module.js');
 	const app = angular.module('PeopleApp', [])
 
-	__webpack_require__(4);
-	__webpack_require__(8)(app)
+	__webpack_require__(7);
+	__webpack_require__(11)(app)
 
+	__webpack_require__(12)(app);
+	__webpack_require__(13)(app);
 
-	  app.controller('PeopleController', ['$http', 'PeopleService', function($http, PeopleService) {
-	    // const mainRoute = 'http://localhost:3000/api/people';
+	  app.controller('PeopleController', ['$http', 'PeopleService', 'ErrorService', 'AuthService',
+	  function($http, PeopleService, ErrorService, AuthService) {
+
 	    const vm = this;
 	    const peopleResource = PeopleService('people');
+
+	    vm.error = ErrorService();
 
 	    vm.smokeTest = 'Smoke Test';
 	    vm.people = ['person'];
@@ -30842,6 +30851,14 @@
 	        })
 	      })
 	    }
+
+	    vm.signUp = function(user) {
+	      AuthService.createUser(user, function(err, res) {
+	        if (err) return ErrorService('Problem Creating User');
+	        $location.path('/home');
+	      })
+	    }
+
 	  }])
 
 	  .directive('peopleDirective', function() {
@@ -30851,18 +30868,71 @@
 	    }
 	  })
 
+	  app.config(['$routeProvider', function(router) {
+	    router
+	      .when('signUp', {
+	        controller: 'PeopleController as peoplectrl',
+	        controllerAs: 'peoplectrl',
+	        templateUrl: './signUp.html'
+	      })
+	      .when('/home', {
+	        controller: 'PeopleController',
+	        controllerAs: 'peoplectrl',
+	        templateUrl: './home.html'
+	      })
+	  }])
+
 
 /***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	const angular = __webpack_require__(1);
+
+	(function() {
+	  angular.module('HeadModule', [])
+
+	  .directive('headerDirective', function() {
+	    return {
+	      restrict: 'E',
+	      templateUrl: './headerView.html'
+	    }
+	  })
+	})();
+
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	const angular = __webpack_require__(1);
+
+	(function () {
+	  angular.module('App', ['PeopleApp', 'HeadModule'])
+	})()
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(5);
+	var content = __webpack_require__(8);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(7)(content, {});
+	var update = __webpack_require__(10)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -30879,10 +30949,10 @@
 	}
 
 /***/ },
-/* 5 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(6)();
+	exports = module.exports = __webpack_require__(9)();
 	// imports
 
 
@@ -30893,7 +30963,7 @@
 
 
 /***/ },
-/* 6 */
+/* 9 */
 /***/ function(module, exports) {
 
 	/*
@@ -30949,7 +31019,7 @@
 
 
 /***/ },
-/* 7 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31201,13 +31271,16 @@
 
 
 /***/ },
-/* 8 */
-/***/ function(module, exports) {
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
+	__webpack_require__(12);
+
 	module.exports = function(app) {
-	  app.factory('PeopleService', ['$http', function($http) {
+	  app.factory('PeopleService', ['$http', 'AuthService',
+	  function($http, AuthService) {
 	    const mainRoute = 'http://localhost:3000/api/';
 
 	    function Resource(resourceName) {
@@ -31215,7 +31288,11 @@
 	    }
 
 	    Resource.prototype.getAll = function() {
-	      return $http.get(mainRoute + this.resourceName)
+	      return $http.get(mainRoute + this.resourceName, {
+	        headers: {
+	          token: AuthService.getToken()
+	        }
+	      })
 	    }
 
 	    Resource.prototype.create = function(data) {
@@ -31238,36 +31315,66 @@
 
 
 /***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/* 12 */
+/***/ function(module, exports) {
 
-	'use strict';
-
-	const angular = __webpack_require__(1);
-
-	(function() {
-	  angular.module('HeadModule', [])
-
-	  .directive('headerDirective', function() {
-	    return {
-	      restrict: 'E',
-	      templateUrl: './headerView.html'
+	module.exports = function(app) {
+	  app.factory('AuthService', ['$http', '$window', function($http, $window) {
+	    var token;
+	    var url = 'http://localhost:3000';
+	    var auth = {
+	      createUser(user, cb) {
+	        cb || function() {};
+	        $http.post(url + '/signup')
+	          .then((res) => {
+	            token = $window.loacalStorage.token = res.data.token;
+	            cb(null, res)
+	          }, (err) => {
+	            cb(err)
+	          })
+	      },
+	      getToken() {
+	        return token || $window.localStorage.token;
+	      },
+	    signOut(cb) {
+	      // cb = cb || function() {}
+	      token = null;
+	      $window.localStorage.token = null;
+	      cb && cb();
+	    },
+	    signIn(user, cb) {
+	      cb = cb || function() {};
+	      $http.get(url + '/signin', {
+	        headers: {
+	          authorization: 'Basic ' + btoa(user.email + ':' + user.password)
+	        }
+	      }).then((res) => {
+	        token = $window.localStorage.token = res.data.token;
+	        cb(null, res);
+	      }, (err) => {
+	        cb(err);
+	      })
 	    }
-	  })
-	})();
+	  }
+	    return auth;
+	  }])
+	}
 
 
 /***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/* 13 */
+/***/ function(module, exports) {
 
-	'use strict';
-
-	const angular = __webpack_require__(1);
-
-	(function () {
-	  angular.module('App', ['PeopleApp', 'HeadModule'])
-	})()
+	module.exports = function(app) {
+	  app.factory('ErrorService', function() {
+	    var error;
+	    return function(newError) {
+	      if (newError === null) return error = null;
+	      if (!newError) return error;
+	      return error = newError;
+	    }
+	  })
+	};
 
 
 /***/ }

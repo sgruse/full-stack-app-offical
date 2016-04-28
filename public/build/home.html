@@ -1,0 +1,19 @@
+<main data-ng-cloak data-ng-init="peoplectrl.getPeople()"
+  data-ng-controller="PeopleController as peoplectrl">
+  <ul>
+    <li data-ng-repeat="person in peoplectrl.people">{{person.name}}
+      <button data-ng-click="peoplectrl.removePerson(person)">Delete</button>
+      <button data-ng-click="peoplectrl.toggleForm(person)">Edit</button>
+      <form data-ng-if="person.editing" data-ng-submit="peoplectrl.updatePerson(person)">
+        <input type="text" data-ng-model="person.name">
+        <button data-ng-click="peoplectrl.toggleForm(person)">Cancel</button>
+        <button type="submit">update</button>
+      </form>
+    </li>
+  </ul>
+  <form data-ng-submit="peoplectrl.createPerson(peoplectrl.newPerson)">
+    <input type="text" data-ng-model="peoplectrl.newPerson.name"/>
+    <button type="submit">New Person</button>
+  </form>
+  <button ng-click="peoplectrl.signOut()">Sign Out</button>
+</main>

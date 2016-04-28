@@ -5,6 +5,7 @@ let lint = require('gulp-eslint');
 let mocha = require('gulp-mocha');
 let webpack = require('gulp-webpack');
 let del = require('del');
+let sass = require('gulp-sass');
 
 let paths = ['*.js', 'models/*.js', 'routes/*.js', 'test/*.js', 'public/js/*.js'];
 
@@ -31,15 +32,17 @@ gulp.task('del-build', () => {
 gulp.task('copy-html', () => {
   gulp.src([__dirname + '/public/index.html',
   './public/components/header/headerView.html',
-  './public/components/people/peopleView.html'
+  './public/components/people/peopleView.html',
+  './public/components/people/signUp.html',
+  './public/components/people/home.html'
 ])
   .pipe(gulp.dest(__dirname + '/public/build'));
 });
 
-gulp.task('copy-css', () => {
-  gulp.src(__dirname + '/public/css/*.css')
-  .pipe(gulp.dest(__dirname + '/public/build'));
-});
+// gulp.task('copy-css', () => {
+//   gulp.src(__dirname + '/public/css/*.css')
+//   .pipe(gulp.dest(__dirname + '/public/build'));
+// });
 
 gulp.task('webpack', () => {
   return gulp.src(__dirname + '/public/entry.js')
@@ -55,6 +58,16 @@ gulp.task('webpack', () => {
     }
   }))
   .pipe(gulp.dest(__dirname + '/public/build/'));
+});
+
+gulp.task('sass', function() {
+  return gulp.src(__dirname + '/public/sass/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest(__dirname + '/public/build'));
+});
+
+gulp.task('sass:watch', function() {
+  gulp.watch(__dirname + '/public/sass/*.scss', ['sass']);
 });
 
 gulp.task('watch', () =>{
@@ -78,4 +91,4 @@ gulp.task('eslint', () => {
 });
 
 
-gulp.task('default', ['eslint', 'del-build', 'webpack', 'bundle:test', 'copy-html', 'copy-css']);
+gulp.task('default', ['eslint', 'del-build', 'webpack', 'bundle:test', 'copy-html', 'sass']);

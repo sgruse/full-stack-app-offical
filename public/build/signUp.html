@@ -1,0 +1,18 @@
+<section>
+
+  <form ng-submit="peoplectrl.sighnUp(user)">
+    <h1 ng-if="peoplectrl.error">{{peoplectrl.error}}</h1>
+    <input type="text" ng-model="newUser.email" placeholder="Email">
+    <input type="text" ng-model="newUser.username" placeholder="Username">
+    <input type="password" ng-model="newUser.password" placeholder="Password">
+    <button type="submit">Sign Up</button>
+  </form>
+
+<form ng-submit="peoplectrl.signIn(user)">
+  <input type="text" ng-model="user.email" placeholder="Email">
+  <input type="text" ng-model="user.username" placeholder="Username">
+  <input type="password" ng-model="user.password" placeholder="Password">
+  <button type="submit">Sign In</button>
+</form>
+
+</section>

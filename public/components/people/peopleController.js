@@ -1,17 +1,25 @@
 'use strict';
 
 const angular = require('angular');
+
+// require('angular-route');
+
 // require (__dirname + './app/module.js');
 const app = angular.module('PeopleApp', [])
 
 require(__dirname + '/../../css/style.css');
 require('./peopleService')(app)
 
+require(__dirname + '/../services/auth_service')(app);
+require('./error_service')(app);
 
-  app.controller('PeopleController', ['$http', 'PeopleService', function($http, PeopleService) {
-    // const mainRoute = 'http://localhost:3000/api/people';
+  app.controller('PeopleController', ['$http', 'PeopleService', 'ErrorService', 'AuthService',
+  function($http, PeopleService, ErrorService, AuthService) {
+
     const vm = this;
     const peopleResource = PeopleService('people');
+
+    vm.error = ErrorService();
 
     vm.smokeTest = 'Smoke Test';
     vm.people = ['person'];
@@ -54,6 +62,14 @@ require('./peopleService')(app)
         })
       })
     }
+
+    vm.signUp = function(user) {
+      AuthService.createUser(user, function(err, res) {
+        if (err) return ErrorService('Problem Creating User');
+        $location.path('/home');
+      })
+    }
+
   }])
 
   .directive('peopleDirective', function() {
@@ -62,3 +78,17 @@ require('./peopleService')(app)
       templateUrl: './peopleView.html'
     }
   })
+
+  app.config(['$routeProvider', function(router) {
+    router
+      .when('signUp', {
+        controller: 'PeopleController as peoplectrl',
+        controllerAs: 'peoplectrl',
+        templateUrl: './signUp.html'
+      })
+      .when('/home', {
+        controller: 'PeopleController',
+        controllerAs: 'peoplectrl',
+        templateUrl: './home.html'
+      })
+  }])

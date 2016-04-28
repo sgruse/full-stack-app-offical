@@ -1,7 +1,10 @@
 'use strict';
 
+require(__dirname + '/../services/auth_service');
+
 module.exports = function(app) {
-  app.factory('PeopleService', ['$http', function($http) {
+  app.factory('PeopleService', ['$http', 'AuthService',
+  function($http, AuthService) {
     const mainRoute = 'http://localhost:3000/api/';
 
     function Resource(resourceName) {
@@ -9,7 +12,11 @@ module.exports = function(app) {
     }
 
     Resource.prototype.getAll = function() {
-      return $http.get(mainRoute + this.resourceName)
+      return $http.get(mainRoute + this.resourceName, {
+        headers: {
+          token: AuthService.getToken()
+        }
+      })
     }
 
     Resource.prototype.create = function(data) {
