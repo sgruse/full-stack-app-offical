@@ -30853,11 +30853,23 @@
 	      })
 	    }
 
+	    vm.signIn = function(user) {
+	      AuthService.signIn(user, (err, res) => {
+	        if (err) return ErrorService('Problem signing in')
+	        $location.path('/home');
+	      })
+	    }
+
 	    vm.signUp = function(user) {
-	      console.log('ONE SIGN UP OBJECT', user);
 	      AuthService.createUser(user, function(err, res) {
 	        if (err) return ErrorService('Problem Creating User');
 	        $location.path('/home');
+	      })
+	    }
+
+	    vm.signOut = function() {
+	      AuthService.signOut(() => {
+	        $location.path('/signUp');
 	      })
 	    }
 
@@ -32352,7 +32364,12 @@
 	    },
 	    signIn(user, cb) {
 	      cb = cb || function() {};
-	      $http.get(url + '/signIn', {
+	      // var headers = {
+	      //   authorization: 'Basic ' + btoa(user.email + ':' + user.password)
+	      // }
+
+	      // console.log('HEADERS ON CLIENT : ', config);
+	      $http.get(url + '/signin', {
 	        headers: {
 	          authorization: 'Basic ' + btoa(user.email + ':' + user.password)
 	        }
@@ -32362,6 +32379,7 @@
 	      }, (err) => {
 	        cb(err);
 	      })
+	      // debugger If I send it Aaron's way it get preflight header error, if i send it my way its doesn't see the object
 	    }
 	  }
 	    return auth;

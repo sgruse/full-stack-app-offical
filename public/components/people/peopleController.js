@@ -64,11 +64,23 @@ require('./error_service')(app);
       })
     }
 
+    vm.signIn = function(user) {
+      AuthService.signIn(user, (err, res) => {
+        if (err) return ErrorService('Problem signing in')
+        $location.path('/home');
+      })
+    }
+
     vm.signUp = function(user) {
-      console.log('ONE SIGN UP OBJECT', user);
       AuthService.createUser(user, function(err, res) {
         if (err) return ErrorService('Problem Creating User');
         $location.path('/home');
+      })
+    }
+
+    vm.signOut = function() {
+      AuthService.signOut(() => {
+        $location.path('/signUp');
       })
     }
 

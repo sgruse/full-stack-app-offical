@@ -20,7 +20,6 @@ app.use(bodyParser.json());
 require(__dirname + '/routes/people-route')(apiRouter);
 require(__dirname + '/routes/user_routes')(apiRouter);
 // require(__dirname + '/routes/auth_routes')(apiRouter);
-const authRouter = require(__dirname + '/routes/auth_routes')
 
 
 
@@ -31,8 +30,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(authRouter)
+const authRouter = require(__dirname + '/routes/auth_routes')
+
 app.use('/api', apiRouter);
+app.use(authRouter)
 
 app.listen(port, () => {
   console.log('Server started on port 3000');

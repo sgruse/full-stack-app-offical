@@ -25,7 +25,12 @@ module.exports = function(app) {
     },
     signIn(user, cb) {
       cb = cb || function() {};
-      $http.get(url + '/signIn', {
+      // var headers = {
+      //   authorization: 'Basic ' + btoa(user.email + ':' + user.password)
+      // }
+
+      // console.log('HEADERS ON CLIENT : ', config);
+      $http.get(url + '/signin', {
         headers: {
           authorization: 'Basic ' + btoa(user.email + ':' + user.password)
         }
@@ -35,6 +40,7 @@ module.exports = function(app) {
       }, (err) => {
         cb(err);
       })
+      // debugger If I send it Aaron's way it get preflight header error, if i send it my way its doesn't see the object
     }
   }
     return auth;

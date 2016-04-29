@@ -49,19 +49,17 @@ authRouter.post('/signup', jsonParser, (req, res) => {
 })
 
 
+authRouter.get('/signin', basicHTTP, (req, res) => {
+  User.findOne({'authentication.email': req.basicHTTP.email}, (err, user) => {
+    if (err) {
+      console.log(err);
+      return res.status(401).json({msg: 'authenticat seyuzzz no!'});
+    }
 
+    if (!user) return res.status(401).json({msg: 'no seyzzz the authenticat'});
 
-// authRouter.get('/signIn', basicHTTP, (req, res) => {
-//   User.findOne({'authentication.email': req.basicHTTP.email}, (err, user) => {
-//     if (err) {
-//       console.log(err);
-//       return res.status(401).json({msg: 'authenticat seyuzzz no!'});
-//     }
-//
-//     if (!user) return res.status(401).json({msg: 'no seyzzz the authenticat'});
-//
-//     if (!user.comparePassword(req.basicHTTP.password)) return res.status(401).json({msg: 'authenticat seyzzz no!'});
-//
-//     res.json({token: user.generateToken()});
-//   });
-// });
+    if (!user.comparePassword(req.basicHTTP.password)) return res.status(401).json({msg: 'authenticat seyzzz no!'});
+
+    res.json({token: user.generateToken()});
+  });
+});
