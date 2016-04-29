@@ -30807,6 +30807,7 @@
 
 	    const vm = this;
 	    const peopleResource = PeopleService('people');
+	    vm.showList = false;
 
 	    vm.error = ErrorService();
 
@@ -30822,7 +30823,7 @@
 	        },
 	      function(error) {
 	        ErrorService('Please sign in')
-	        $location.path('/singUp');
+	        $location.path('/signUp');
 	      })
 	    }
 	    vm.createPerson = function(person) {
@@ -30882,7 +30883,7 @@
 	    }
 	  })
 
-	  app.config(['$routeProvider', function(router) {
+	  app.config(['$routeProvider', '$locationProvider', function(router, $locationProvider) {
 	    router
 	      .when('/signUp', {
 	        controller: 'PeopleController',
@@ -30892,13 +30893,21 @@
 
 	      })
 	      .when('/', {
-	        redirect: '/signUp'
+	        controller: 'PeopleController',
+	        controllerAs: 'peoplectrl',
+	        // templateUrl: './signUp.html'
+	        templateUrl: './signUp.html'
+
 	      })
 	      .when('/home', {
 	        controller: 'PeopleController',
 	        controllerAs: 'peoplectrl',
 	        templateUrl: './peopleView.html'
 	      })
+	      // $locationProvider.html5Mode({
+	      //   enabled: true,
+	      //   requireBase: false
+	      // });
 	  }])
 
 
@@ -32307,6 +32316,7 @@
 	    }
 
 	    Resource.prototype.getAll = function() {
+	      console.log('People Service Get has been hit!!!!!!!!!');
 	      return $http.get(mainRoute + this.resourceName, {
 	        headers: {
 	          token: AuthService.getToken()
@@ -32315,15 +32325,27 @@
 	    }
 
 	    Resource.prototype.create = function(data) {
-	      return $http.post(mainRoute + this.resourceName, data)
+	      return $http.post(mainRoute + this.resourceName, data, {
+	        headers: {
+	          token: AuthService.getToken()
+	        }
+	      })
 	    }
 
 	    Resource.prototype.delete = function(data) {
-	      return $http.delete(mainRoute + this.resourceName + '/' + data)
+	      return $http.delete(mainRoute + this.resourceName + '/' + data, {
+	        headers: {
+	          token: AuthService.getToken()
+	        }
+	      })
 	    }
 
 	    Resource.prototype.update = function(data) {
-	      return $http.put(mainRoute + this.resourceName + '/' + data._id, data)
+	      return $http.put(mainRoute + this.resourceName + '/' + data._id, data, {
+	        headers: {
+	          token: AuthService.getToken()
+	        }
+	      })
 	    }
 
 	    return function(resourceName) {
@@ -32343,7 +32365,6 @@
 	    var url = 'http://localhost:3000';
 	    var auth = {
 	      createUser(user, cb) {
-	        console.log('TWO AUTH SERVICE GETS USER OBJECT FROM PEOPLCTRL', user);
 	        cb || function() {};
 	        $http.post(url + '/signup', user)
 	          .then((res) => {
@@ -32364,16 +32385,11 @@
 	    },
 	    signIn(user, cb) {
 	      cb = cb || function() {};
-	      // var headers = {
-	      //   authorization: 'Basic ' + btoa(user.email + ':' + user.password)
-	      // }
-
-	      // console.log('HEADERS ON CLIENT : ', config);
 	      $http.get(url + '/signin', {
 	        headers: {
 	          authorization: 'Basic ' + btoa(user.email + ':' + user.password)
-	        }
-	      }).then((res) => {
+	        }})
+	      .then((res) => {
 	        token = $window.localStorage.token = res.data.token;
 	        cb(null, res);
 	      }, (err) => {

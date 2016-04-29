@@ -1,2 +1,8 @@
 body .show-button {
   color: blue; }
+
+h1 {
+  color: purple; }
+
+* {
+  font-family: arial; }

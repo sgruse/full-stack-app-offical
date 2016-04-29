@@ -1,8 +1,8 @@
-<main ng-init="PeopleController.getPeople()" ng-controller="PeopleController as peopleCtrl">
+<main ng-controller="PeopleController as peopleCtrl">
 
 
   <section class="header-and-button">
-    <h2>People</h2>
+    <h3>Enter a person into the database</h3>
     <button class="lime-button" type="button" ng-click="peopleCtrl.createPerson.rendered = person._id">Create Person</button>
   </section>
 
@@ -13,12 +13,12 @@
     <button type="reset" class="cancel-button" ng-click="peopleCtrl.createPerson.rendered = null">Cancel</button>
   </form>
 
-  <section>
+  <section ng-if="peopleCtrl.showList === true">
     <li ng-repeat="people in peopleCtrl.people">{{people.name}}</li>
   </section>
-  <button  class="show-button" type="submit" ng-click="peopleCtrl.getPeople()">Show Entries</button>
+  <button  class="show-button" type="submit" ng-click="peopleCtrl.getPeople(); peopleCtrl.showList = true">Show Entries</button>
 
-  <section ng-repeat="person in peopleCtrl.people track by $index">
+  <section ng-show="peopleCtrl.showList === true" ng-repeat="person in peopleCtrl.people track by $index">
     <ul>
       <li class="info-line"><span>Name: </span>{{person.name}}</li><br>
       <li class="info-line"><span>Age: </span>{{person.age}}</li><br>

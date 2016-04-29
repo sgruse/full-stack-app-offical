@@ -18,6 +18,7 @@ require('./error_service')(app);
 
     const vm = this;
     const peopleResource = PeopleService('people');
+    vm.showList = false;
 
     vm.error = ErrorService();
 
@@ -33,7 +34,7 @@ require('./error_service')(app);
         },
       function(error) {
         ErrorService('Please sign in')
-        $location.path('/singUp');
+        $location.path('/signUp');
       })
     }
     vm.createPerson = function(person) {
@@ -93,7 +94,7 @@ require('./error_service')(app);
     }
   })
 
-  app.config(['$routeProvider', function(router) {
+  app.config(['$routeProvider', '$locationProvider', function(router, $locationProvider) {
     router
       .when('/signUp', {
         controller: 'PeopleController',
@@ -103,11 +104,19 @@ require('./error_service')(app);
 
       })
       .when('/', {
-        redirect: '/signUp'
+        controller: 'PeopleController',
+        controllerAs: 'peoplectrl',
+        // templateUrl: './signUp.html'
+        templateUrl: './signUp.html'
+
       })
       .when('/home', {
         controller: 'PeopleController',
         controllerAs: 'peoplectrl',
         templateUrl: './peopleView.html'
       })
+      // $locationProvider.html5Mode({
+      //   enabled: true,
+      //   requireBase: false
+      // });
   }])

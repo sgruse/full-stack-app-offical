@@ -4,7 +4,6 @@ module.exports = function(app) {
     var url = 'http://localhost:3000';
     var auth = {
       createUser(user, cb) {
-        console.log('TWO AUTH SERVICE GETS USER OBJECT FROM PEOPLCTRL', user);
         cb || function() {};
         $http.post(url + '/signup', user)
           .then((res) => {
@@ -25,16 +24,11 @@ module.exports = function(app) {
     },
     signIn(user, cb) {
       cb = cb || function() {};
-      // var headers = {
-      //   authorization: 'Basic ' + btoa(user.email + ':' + user.password)
-      // }
-
-      // console.log('HEADERS ON CLIENT : ', config);
       $http.get(url + '/signin', {
         headers: {
           authorization: 'Basic ' + btoa(user.email + ':' + user.password)
-        }
-      }).then((res) => {
+        }})
+      .then((res) => {
         token = $window.localStorage.token = res.data.token;
         cb(null, res);
       }, (err) => {

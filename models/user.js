@@ -11,7 +11,6 @@ var userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.hashPassword = function(password) {
-  console.log('pASSWORD' + password);
   var hash = this.authentication.password = bcrypt.hashSync(password, 8);
   console.log('HASH' + hash);
   return hash;
@@ -22,7 +21,6 @@ userSchema.methods.comparePassword = function(password) {
 };
 
 userSchema.methods.generateToken = function() {
-  console.log('GENERATE TOKEN FUNCTION HIT ON USER MODEL');
   return jwt.sign({id: this._id}, process.env.APP_SECRET || 'changethis');
 };
 
