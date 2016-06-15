@@ -4,7 +4,6 @@ const angular = require('angular');
 
 require('angular-route');
 
-// require (__dirname + './app/module.js');
 const app = angular.module('PeopleApp', ['ngRoute'])
 
 require(__dirname + '/../../css/style.css');
@@ -115,8 +114,5 @@ require('./error_service')(app);
         controllerAs: 'peoplectrl',
         templateUrl: './peopleView.html'
       })
-      // $locationProvider.html5Mode({
-      //   enabled: true,
-      //   requireBase: false
-      // });
+
   }])
