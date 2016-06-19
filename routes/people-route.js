@@ -6,7 +6,6 @@ const handleDBError = require(__dirname + '/../lib/handle_db_error');
 const jwtAuth = require(__dirname + '/../lib/jwt_auth.js');
 
 module.exports = (apiRouter) => {
-  console.log('GET ROUTE HAS BEEN HIT AFTER PEOPLE SERVICE');
 apiRouter.route('/people')
   .get(jwtAuth, (req, res) => {
     People.find({}, (err, people) => {
@@ -36,7 +35,6 @@ apiRouter.route('/people/:id')
     })
 })
   .delete(jwtAuth, (req, res) => {
-    console.log('DELETE ROUTE HAS BEEN HIT WITH : ' + req.params.id);
     People.findById(req.params.id, (err, person) => {
       if (err) return handleDBError(err, res);
       person.remove((err, person) => {
